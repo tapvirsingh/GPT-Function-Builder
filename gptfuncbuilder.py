@@ -42,9 +42,9 @@ class GPTFuncBuilder:
   # Public Methods
     
   # Add any property with not common prompt
-  def add_prop(self, key,val):
+  def add_prop(self, name,description):
     o_prop = self.__o_prop
-    o_prop.add_prop(key,val)
+    o_prop.add_prop(name,description)
 
   # Main function that builds and returns the enitre function
   def build(self,name=None, description=None, lst = None):
