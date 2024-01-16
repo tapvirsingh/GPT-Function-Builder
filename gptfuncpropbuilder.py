@@ -15,17 +15,36 @@ class GPTFuncPropBuilder:
 
     # Checks if build_props function was called before
     # calling add_prop
-    __has_build = False
+    self.__has_build = False
+    
 
-  # Build properties
-  def build_props(self, lst):
-    if not isinstance(lst, list):
-      return None
+  # This function sets properties description.
+  def __insert_in_dic(self,description):
 
-    self.__has_build = True
+    desc = description
 
-    for item in lst:
-      #
+    dic = {
+      "type": "string",
+      "description": desc
+    }
+    return dic
+
+  # Returns property
+  def __build_prop(self, text, desc = None):
+
+    description = desc
+    
+    # If there is common text
+    if desc == None:
+      description = f'{self.prop_prefix} {text} {self.prop_suffix}'
+
+    return self.__insert_in_dic(description.strip()) 
+  
+  
+  # Update list of properties
+  def __update_list_of_props(self, lst_of_props):
+    for item in lst_of_props:
+          #
       # Following code does the following e.g.
       # Example
       # Converts GPU intensity into gpu_intensity
@@ -35,6 +54,42 @@ class GPTFuncPropBuilder:
 
       # add key value in dictionary
       self.__d_find_laptop_properties[lower_item] = self.__build_prop(item)
+  
+  
+  # Update dictionary of properties    
+  def __update_dict_of_props(self, dict_of_props):
+      
+    for key,value in dict_of_props.items():
+          #
+      # Following code does the following e.g.
+      # Example
+      # Converts GPU intensity into gpu_intensity
+      #
+
+      lower_item, item = self.prepare_key(key)
+
+      # add key value in dictionary
+      self.__d_find_laptop_properties[lower_item] = self.__build_prop(item, desc = value)
+  
+  
+  # Build properties
+  def build_props(self, lst_of_props=None, dict_of_props = None):
+      
+    # If both are missing then exit
+    if not isinstance(lst_of_props, list) and not isinstance(dict_of_props, dict):
+      return None
+    
+    # set the flag
+    self.__has_build = True
+
+    # Update the list if list is set.
+    if lst_of_props != None:
+      self.__update_list_of_props(lst_of_props)
+    
+    #Update the dict if, dict is set
+    if dict_of_props != None:
+      self.__update_dict_of_props(dict_of_props)
+    
 
   # Add any other property which does not have common prop prefix and suffix
   def add_prop(self, key, val):
@@ -95,26 +150,10 @@ class GPTFuncPropBuilder:
     self.__prop_suffix = val
 
 
-  # This function sets properties description.
-  def __insert_in_dic(self,description):
-
-    desc = description
-
-    dic = {
-      "type": "string",
-      "description": desc
-    }
-    return dic
-
-  # Returns property
-  def __build_prop(self, text):
-    
-    description = f'{self.prop_prefix} {text} {self.prop_suffix}'
-
-    return self.__insert_in_dic(description.strip())
 
 
-# Example
+# # Example
+
 
 # # All are marked * meaning these field are all required.
 # lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]

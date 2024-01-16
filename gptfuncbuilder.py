@@ -3,14 +3,14 @@ from gptfuncpropbuilder import GPTFuncPropBuilder
 # Builds the function calling for GPT
 class GPTFuncBuilder:
 
-
-  def __init__(self,name=None, description=None, lst = None):
+  # lst = List of properties / parameters
+  def __init__(self,name=None, description=None, dictionary = None):
     # Calls this function to set the class attributes
-    self.__assign(name, description, lst)
+    self.__assign(name, description,  dictionary)
 
-  def __assign(self,name, description,lst):
+  def __assign(self,name, description, dictionary):
     # Exit the function if none of the parameters are set
-    if name== None and description == None and lst == None:
+    if name== None and description == None and dictionary == None:
         return None
 
     # Sets the name and description of the function
@@ -22,7 +22,7 @@ class GPTFuncBuilder:
     self.__o_prop = o_prop
 
     # Build the properties using the list
-    o_prop.build_props(lst)
+    o_prop.build_props(dict_of_props = dictionary)
 
     # Get the properties
     self.__properties = o_prop.get_props()
@@ -50,19 +50,18 @@ class GPTFuncBuilder:
   def build(self,name=None, description=None, lst = None):
     self.__assign(name, description, lst)
     dic = {
-        "type" : "function",
-        "function":
-        {
-        "name":self.__name,
-        "description":self.__description,
-        "parameters":self.__build_parameters()
-        }
-        }
+            "type" : "function",
+            "function":
+            { "name":self.__name,
+              "description":self.__description,
+              "parameters":self.__build_parameters()
+            }
+          }
 
     return dic
 
 
-# Example
+# # Example
 
 # # All are marked * meaning these field are all required.
 # lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]
