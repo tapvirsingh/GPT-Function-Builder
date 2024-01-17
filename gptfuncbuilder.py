@@ -3,16 +3,22 @@ from gptfuncpropbuilder import GPTFuncPropBuilder
 # Builds the function calling for GPT
 class GPTFuncBuilder:
 
+
   # lst = List of properties / parameters
-  def __init__(self,name=None, description=None, dictionary = None):
+  def __init__(self,name=None, description=None, lst = None, dic = None):
+        
     # Calls this function to set the class attributes
-    self.__assign(name, description,  dictionary)
+    self.__assign(name, description, assign_lst = lst,  assign_dic = dic)
 
-  def __assign(self,name, description, dictionary):
+  def __assign(self,name, description, assign_lst = None, assign_dic = None):
+    
+    # If one of these is set
+    is_set = assign_lst != None or assign_dic != None
+    
     # Exit the function if none of the parameters are set
-    if name== None and description == None and dictionary == None:
+    if name== None and description == None and not is_set:
         return None
-
+    
     # Sets the name and description of the function
     self.__name = name
     self.__description = description
@@ -21,8 +27,12 @@ class GPTFuncBuilder:
     o_prop = GPTFuncPropBuilder()
     self.__o_prop = o_prop
 
+    # Priorty
+    if assign_dic != None:
     # Build the properties using the list
-    o_prop.build_props(dict_of_props = dictionary)
+      o_prop.build_props(dict_of_props = assign_dic)
+    else:
+      o_prop.build_props(lst_of_props = assign_lst)
 
     # Get the properties
     self.__properties = o_prop.get_props()
@@ -63,17 +73,32 @@ class GPTFuncBuilder:
 
 # # Example
 
-# # All are marked * meaning these field are all required.
-# lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]
+# Use either of the props
+# All are marked * meaning these field are all required.
+lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]
 
-# # Create build function object with the name, description and list of properties
-# o_build_func =  GPTFuncBuilder("find_laptop", "Based on user's requirements this function searches the laptop in the database",lst_of_prop)
+# Or use
+# dictionary of prop
+dict_of_prop = {
+    "*GPU intensity": "Prompt describing about GPU intensity",
+    "*display quality":"Prompt describing about display quality",
+    "*portability":"Prompt describing about probability",
+    "*multitasking":"Prompt describing about display multitasking",
+    "*processing speed":"Prompt describing about display processing speed"
+  }
 
-# # Add required budget property with custom description
-# o_build_func.add_prop("*budget","The amount of money a user can invest for purchasing laptop. Budget must be greater than INR 25000")
+# Create build function object with the name, description and list of properties
+o_build_func =  GPTFuncBuilder("find_laptop", 
+                               "Based on user's requirements this function searches the laptop in the database",
+                               lst = lst_of_prop)
 
-# # Build the function
-# find_lptp = o_build_func.build()
+# o_build_func =  GPTFuncBuilder("find_laptop", "Based on user's requirements this function searches the laptop in the database",dictionary = dict_of_prop)
 
-# # Output of the built function
-# print(find_lptp)
+# Add required budget property with custom description
+o_build_func.add_prop("*budget","The amount of money a user can invest for purchasing laptop. Budget must be greater than INR 25000")
+
+# Build the function
+find_lptp = o_build_func.build()
+
+# Output of the built function
+print(find_lptp)

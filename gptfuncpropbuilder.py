@@ -27,15 +27,16 @@ class GPTFuncPropBuilder:
       "type": "string",
       "description": desc
     }
+    
     return dic
 
   # Returns property
-  def __build_prop(self, text, desc = None):
+  def __build_prop(self, text = None, desc = None):
 
     description = desc
     
     # If there is common text
-    if desc == None:
+    if text != None:
       description = f'{self.prop_prefix} {text} {self.prop_suffix}'
 
     return self.__insert_in_dic(description.strip()) 
@@ -53,7 +54,7 @@ class GPTFuncPropBuilder:
       lower_item, item = self.prepare_key(item)
 
       # add key value in dictionary
-      self.__d_find_laptop_properties[lower_item] = self.__build_prop(item)
+      self.__d_find_laptop_properties[lower_item] = self.__build_prop(text = item)
   
   
   # Update dictionary of properties    
@@ -69,7 +70,7 @@ class GPTFuncPropBuilder:
       lower_item, item = self.prepare_key(key)
 
       # add key value in dictionary
-      self.__d_find_laptop_properties[lower_item] = self.__build_prop(item, desc = value)
+      self.__d_find_laptop_properties[lower_item] = self.__build_prop(desc = value)
   
   
   # Build properties
@@ -101,7 +102,7 @@ class GPTFuncPropBuilder:
         # val ignored as we don't want to make changes to the description
         key,ignore_val = self.prepare_key(key)
 
-    self.__d_find_laptop_properties[key] = self.__insert_in_dic(val)
+        self.__d_find_laptop_properties[key] = self.__insert_in_dic(val)
 
   # Prepare key from val
   def prepare_key(self, val):
