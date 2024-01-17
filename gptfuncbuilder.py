@@ -5,7 +5,10 @@ class GPTFuncBuilder:
 
 
   # lst = List of properties / parameters
-  def __init__(self,name=None, description=None, lst = None, dic = None):
+  def __init__(self,name=None, description=None, lst = None, dic = None, prefix = '', suffix = ''):
+        
+    self.__prefix = prefix
+    self.__suffix = suffix
         
     # Calls this function to set the class attributes
     self.__assign(name, description, assign_lst = lst,  assign_dic = dic)
@@ -24,7 +27,7 @@ class GPTFuncBuilder:
     self.__description = description
 
     # Calls the function property builder
-    o_prop = GPTFuncPropBuilder()
+    o_prop = GPTFuncPropBuilder(prop_prefix = self.__prefix, prop_suffix = self.__suffix)
     self.__o_prop = o_prop
 
     # Priorty
@@ -69,7 +72,7 @@ class GPTFuncBuilder:
           }
 
     return dic
-
+  
 
 # # Example
 
@@ -90,7 +93,9 @@ dict_of_prop = {
 # Create build function object with the name, description and list of properties
 o_build_func =  GPTFuncBuilder("find_laptop", 
                                "Based on user's requirements this function searches the laptop in the database",
-                               lst = lst_of_prop)
+                               lst = lst_of_prop,
+                               prefix = "Classify",
+                               suffix = "into High, Medium or Low")
 
 # o_build_func =  GPTFuncBuilder("find_laptop", "Based on user's requirements this function searches the laptop in the database",dictionary = dict_of_prop)
 

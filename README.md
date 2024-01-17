@@ -9,14 +9,65 @@ Quick and easy function calling JSON format builder. Makes it more readable and 
 
 **description :** Description of the function
 
-**lst :** List of parameters
+**lst :** List / Dictionary of parameters. Refer to Adding parameter section below.
+
+
+## Adding Property / Parameter
+
+Creating a list of parameters can be achieved in multiple ways.
+
+1. Using list
+
+Use Python's list to create list of properties / parameters.
+
+```lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]```
+
+**Description**
+
+By default name of the property will be used as the description. If common prefix and suffix are set during the instantiation of GPTFuncBuilder, all the items of the lst_of_prop will be inserted indiviually in the prefix and suffix.
+
+*Example*
+
+```python
+
+o_build_func =  GPTFuncBuilder("find_laptop", 
+                               "Based on user's requirements this function searches the laptop in the database",
+                               lst = lst_of_prop,
+                               prefix = "Classify",
+                               suffix = "into High, Medium or Low")
+
+# Example Output for GPU intensity and portability shall be
+
+# Classify GPU intensity into High, Medium or Low
+# Classify portability into High, Medium or Low
+
+```
+
 
 
 **Required Parameters :** prepend '*' before the name of the parameter in the list to mark it required.
 
-```lst_of_prop = ["*GPU intensity","*display quality","*portability","*multitasking","*processing speed"]```
+2. Dictionary
 
-## Adding Property / Parameter
+Use Python's dictionary to create list of properties / parameters.
+
+
+```python
+
+dict_of_prop = {
+    "*GPU intensity": "Prompt describing about GPU intensity",
+    "*display quality":"Prompt describing about display quality",
+    "*portability":"Prompt describing about probability",
+    "*multitasking":"Prompt describing about display multitasking",
+    "*processing speed":"Prompt describing about display processing speed"
+  }
+
+```
+**Required Parameters :** prepend '*' before the name of the parameter in the list to mark it required.
+
+
+3. By using ```add_prop``` method
+
 ```o_build_func = add_prop(name,description)```
 
 ### Parameters
@@ -85,5 +136,15 @@ print(find_lptp)
     }
   }
 }
+
+```
+
+## Multiple Functions
+
+Multiple functions can be created and then added to a list
+
+```python
+
+[function1, function2]
 
 ```
