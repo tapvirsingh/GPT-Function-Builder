@@ -7,9 +7,13 @@ Quick and easy function calling JSON format builder. Makes it more readable and 
 ### Parameters
 **name :** Name of the function
 
-**description :** Description of the function
+**description :** Description of the function. 
 
 **lst :** List / Dictionary of parameters. Refer to Adding parameter section below.
+
+**prefix :** Sets the common prefix of a property's / parameter's description. Further explained in the example below.
+
+**suffix :** Sets the common suffix of a property's / parameter's description. Further explained in the example below.
 
 
 ## Adding Property / Parameter
